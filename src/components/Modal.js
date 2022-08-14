@@ -14,7 +14,7 @@ const modal={
   },
   visible:{
     opacity:1,
-    transition:{delay:0.05}
+    transition:{delay:0}
   }
 }
 
@@ -62,24 +62,23 @@ const Modal=(
   const onFormSubmitHandler=(e)=>{
     e.preventDefault();
     if(!inputRef.current.value)
-      return;
-    
+    {return;}
+
+      toast.success(`Booked for ${inputRef.current.value} on ${date} at time ${selectedTimeSlot}:00`, {
+        position: "top-center",
+        autoClose: 2000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        })
+  
     updateUnavailableTimeSlotsInDb(inputRef.current.value, date,`${date} ${selectedTimeSlot}:00`);
 
     inputRef.current.value='';
 
     setIsModalOpen(false);
-
-    toast.success(`Booked for ${inputRef.current.value} on ${date} at time ${selectedTimeSlot}:00`, {
-      position: "top-center",
-      autoClose: 2000,
-      hideProgressBar: true,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      })
-
   }
   
 

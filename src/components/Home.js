@@ -33,7 +33,20 @@ const createUnavailableTimeSlotsArr=(data,selectedDateStr,timeSlotsArr=[])=>{
   }
 
   return timeSlotsArr;
-} 
+}
+
+const showSuccessPopup=(reasonStr,selectedDate,selectedTimeSlot)=>{
+
+  toast.success(`Booked for ${reasonStr} on ${selectedDate} at time ${selectedTimeSlot}:00`, {
+    position: "top-center",
+    autoClose: 2000,
+    hideProgressBar: true,
+    closeOnClick: true,
+    pauseOnHover: true,
+    draggable: true,
+    progress: undefined,
+    })
+}
 
 const Home=()=>{
 
@@ -50,12 +63,13 @@ const Home=()=>{
     const [unavailableTimeSlots,setUnavailableTimeSlots]=useState([]);
     const [selectedDate,setSelectedDate]=useState('');
 
-    console.log(data,dataFromDb)
+    //console.log(data,dataFromDb)
 
     useEffect(()=>{
 
       //get database data after a mutation and update state dataFromDb
       if(unavailableTimeSlotsMutation.isSuccess)
+      
         setDataFromDb((prevState)=>{
           return [...prevState,{'date_time':Object.keys(unavailableTimeSlotsMutation.variables)[0]}]
         })
@@ -94,36 +108,16 @@ const Home=()=>{
       }
 
       const updateUnavailableTimeSlotsInDb=(reasonStr,selectedDate,selectedTimeSlot)=>{
-        console.log(unavailableTimeSlotsDbSnapshot?.data);
-         
-        //popup with confirmation message
-        /*toast.success(`Booked for ${reasonStr} on ${selectedDate} at time ${selectedTimeSlot}:00`, {
-          position: "top-center",
-          autoClose: 2000,
-          hideProgressBar: true,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          });*/
+        //console.log(unavailableTimeSlotsDbSnapshot?.data);
 
         //add selectedTimeSlot to database. timeSlot will no longer be available
         unavailableTimeSlotsMutation.mutate({
          [selectedTimeSlot]:true
         })
 
-        //toast.success('alright');
-
-        toast.success(`Booked for ${reasonStr} on ${selectedDate} at time ${selectedTimeSlot}:00`, {
-          position: "top-center",
-          autoClose: 20000,
-          hideProgressBar: true,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          });
+        //toast.success('alright');;
       
+       // showSuccessPopup(reasonStr,selectedDate,selectedTimeSlot)
       }
     
     return(
@@ -134,6 +128,8 @@ const Home=()=>{
         dateClick={handleDateClick}
         initialView="dayGridMonth"/>
         {isModalOpen && <Modal updateUnavailableTimeSlotsInDb={updateUnavailableTimeSlotsInDb} date={selectedDate} unavailableTimeSlots={unavailableTimeSlots} isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen}/>}
+        <ToastContainer
+        />
       </div>
     )
        
