@@ -73,8 +73,10 @@ const Modal=(
         draggable: true,
         progress: undefined,
         })
+
+    console.log(inputRef.current.value, date,`${date} ${selectedTimeSlot}:00`)
   
-    updateUnavailableTimeSlotsInDb(inputRef.current.value, date,`${date} ${selectedTimeSlot}:00`);
+    updateUnavailableTimeSlotsInDb(`${date} ${selectedTimeSlot}:00`);
 
     inputRef.current.value='';
 

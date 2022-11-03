@@ -97,6 +97,7 @@ const Home=()=>{
 
       const updateUnavailableTimeSlotsInDb=(selectedTimeSlot)=>{
         //console.log(unavailableTimeSlotsDbSnapshot?.data);
+        console.log(selectedTimeSlot)
 
         //add selectedTimeSlot to database. timeSlot will no longer be available
         unavailableTimeSlotsMutation.mutate({
